@@ -10,7 +10,7 @@ ___INFO___
 
 {
   "displayName": "Facebook Pixel - Server-Side",
-  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNlcnZlci1TaWRlLVNpbW8tQWhhdmE=",
+  "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE\u003d",
   "description": "This is an unofficial Google Tag Manager template for Facebook\u0027s Server-Side API. The template compiles a request to a GTM Server container, and the container forwards the information using FB\u0027s API.",
   "securityGroups": [],
   "categories": [
@@ -549,7 +549,7 @@ const fbclid = getQueryParameters('fbclid');
 // Build command object base
 const commandObj = {
   event_name: '',
-  event_time: Math.round(getTimestamp() / 1000),
+  event_time: getTimestamp(),
   user_data: {},
   custom_data: {},
   event_source_url: data.eventSourceUrl || getUrl(),
@@ -922,7 +922,7 @@ scenarios:
           '?pid=' + enc(mockData.pixelId) +
           '&tec=' + enc(mockData.testId) +
           '&en=PageView' +
-          '&et=123457' +
+          '&et=123456789' +
           '&esu=' + enc(mockData.eventSourceUrl) +
           '&ei=' + enc(mockData.eventId) +
           '&ou=true' +
@@ -938,63 +938,63 @@ scenarios:
 - name: Add fbclid parameter if cookies not enabled
   code: "const finalUrl = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid='\
     \ + enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId) +\n      '&en=PageView'\
-    \ +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n  \
-    \    '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
+    \ +\n      '&et=123456789' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n\
+    \      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
     \ 'Helsinki', country: 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1:\
-    \ 'val1', prop2: 'val2'}));\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ 'val1', prop2: 'val2'})) +\n      '&dpo=[]';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
     \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
     \    \n                                   \n                                 \
     \  \n      \n      "
 - name: Send pixel successfully with custom event
   code: "mockData.eventName = 'custom';\n\nconst finalUrl = mockData.serverEndpoint\
     \ +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' +\
-    \ enc(mockData.testId) +\n      '&en=custom' +\n      '&et=123457' +\n      '&esu='\
-    \ + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId) +\n \
-    \     '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
-    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}));\n\
-    \nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl, success,\
-    \ failure);\nassertApi('gtmOnSuccess').wasCalled();\n                   \n   \
-    \                                \n                                   \n     \
-    \ \n      "
+    \ enc(mockData.testId) +\n      '&en=custom' +\n      '&et=123456789' +\n    \
+    \  '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
+    \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
+    \ +\n      '&dpo=[]';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
+    \    \n                                   \n                                 \
+    \  \n      \n      "
 - name: Send pixel successfully with variable event name
   code: "mockData.eventName = 'variable';\n\nconst finalUrl = mockData.serverEndpoint\
     \ +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' +\
-    \ enc(mockData.testId) +\n      '&en=ViewContent' +\n      '&et=123457' +\n  \
-    \    '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
+    \ enc(mockData.testId) +\n      '&en=ViewContent' +\n      '&et=123456789' +\n\
+    \      '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
     \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
-    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}));\n\
-    \nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl, success,\
-    \ failure);\nassertApi('gtmOnSuccess').wasCalled();\n                   \n   \
-    \                                \n                                   \n     \
-    \ \n      "
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
+    \ +\n      '&dpo=[]';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
+    \    \n                                   \n                                 \
+    \  \n      \n      "
 - name: Send event parameters from a variable
   code: "mockData.objectPropertiesFromVariable = {prop3: 'val3'};\n\nconst finalUrl\
     \ = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId)\
-    \ +\n      '&tec=' + enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123457'\
+    \ +\n      '&tec=' + enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123456789'\
     \ +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
     \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
     \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop3: 'val3', prop1: 'val1',\
-    \ prop2: 'val2'}));\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ prop2: 'val2'})) +\n      '&dpo=[]';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
     \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
     \    \n                                   \n                                 \
     \  \n      \n      "
 - name: Send multiple pixels
   code: "mockData.pixelId = '12345,23456';\nlet count = 0;\n\nconst finalUrl1 = mockData.serverEndpoint\
     \ +\n      'fbq/' +\n      '?pid=12345' +\n      '&tec=' + enc(mockData.testId)\
-    \ +\n      '&en=PageView' +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl)\
+    \ +\n      '&en=PageView' +\n      '&et=123456789' +\n      '&esu=' + enc(mockData.eventSourceUrl)\
     \ +\n      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud='\
     \ + enc(JSON.stringify({ct: 'Helsinki', country: 'Finland'})) +\n      '&cd='\
-    \ + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}));\n\nconst finalUrl2 =\
-    \ mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=23456' +\n      '&tec='\
-    \ + enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123457' +\n   \
-    \   '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
+    \ + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'})) +\n      '&dpo=[]';\n\n\
+    const finalUrl2 = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=23456'\
+    \ +\n      '&tec=' + enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123456789'\
+    \ +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
     \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
-    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}));\n\
-    \nmock('sendPixel', (url, onsuccess, onfailure) => {\n  if (url === finalUrl1\
-    \ || url === finalUrl2) count++;\n  onsuccess();\n});\n\nrunCode(mockData);\n\n\
-    assertApi('sendPixel').wasCalled();\nassertThat(count, 'sendPixel called invalid\
-    \ number of times.').isEqualTo(2);\nassertApi('gtmOnSuccess').wasCalled();\n \
-    \     "
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
+    \ +\n      '&dpo=[]';\n\nmock('sendPixel', (url, onsuccess, onfailure) => {\n\
+    \  if (url === finalUrl1 || url === finalUrl2) count++;\n  onsuccess();\n});\n\
+    \nrunCode(mockData);\n\nassertApi('sendPixel').wasCalled();\nassertThat(count,\
+    \ 'sendPixel called invalid number of times.').isEqualTo(2);\nassertApi('gtmOnSuccess').wasCalled();\n\
+    \      "
 - name: Enhanced Ecommerce integration fails with invalid object
   code: |-
     mockData.enhancedEcommerce = true;
@@ -1029,11 +1029,11 @@ scenarios:
     \ 'EUR',\n    detail: {\n      products: mockEec.gtm.products\n    }\n  };\n});\n\
     \nconst finalUrl = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=' +\
     \ enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId) +\n      '&en=ViewContent'\
-    \ +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n  \
-    \    '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
-    \ 'Helsinki', country: 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb));\n\
-    \   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\n// Verify\
-    \ that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ +\n      '&et=123456789' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n\
+    \      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
+    \ 'Helsinki', country: 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb))\
+    \ +\n      '&dpo=[]';\n   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\
+    \n// Verify that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
     \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();"
 - name: Enhanced Ecommerce AddToCart works
   code: "mockData.enhancedEcommerce = true;\nmockData.objectPropertyList = {};\n\n\
@@ -1041,11 +1041,11 @@ scenarios:
     \ 'EUR',\n    add: {\n      products: mockEec.gtm.products\n    }\n  };\n});\n\
     \nconst finalUrl = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=' +\
     \ enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId) +\n      '&en=AddToCart'\
-    \ +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n  \
-    \    '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
-    \ 'Helsinki', country: 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb));\n\
-    \   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\n// Verify\
-    \ that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ +\n      '&et=123456789' +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n\
+    \      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct:\
+    \ 'Helsinki', country: 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb))\
+    \ +\n      '&dpo=[]';\n   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\
+    \n// Verify that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
     \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();"
 - name: Enhanced Ecommerce InitiateCheckout works
   code: "mockData.enhancedEcommerce = true;\nmockEec.fb.num_items = 3;\nmockData.objectPropertyList\
@@ -1053,24 +1053,26 @@ scenarios:
     \ {\n    currencyCode: 'EUR',\n    checkout: {\n      products: mockEec.gtm.products\n\
     \    }\n  };\n});\n\nconst finalUrl = mockData.serverEndpoint +\n      'fbq/'\
     \ +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId)\
-    \ +\n      '&en=InitiateCheckout' +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl)\
-    \ +\n      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud='\
-    \ + enc(JSON.stringify({ct: 'Helsinki', country: 'Finland'})) +\n      '&cd='\
-    \ + enc(JSON.stringify(mockEec.fb));\n   \n// Call runCode to run the template's\
-    \ code.\nrunCode(mockData);\n\n// Verify that the tag finished successfully.\n\
-    assertApi('sendPixel').wasCalledWith(finalUrl, success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
+    \ +\n      '&en=InitiateCheckout' +\n      '&et=123456789' +\n      '&esu=' +\
+    \ enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId) +\n   \
+    \   '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb)) +\n      '&dpo=[]';\n\
+    \   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\n// Verify\
+    \ that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
 - name: Enhanced Ecommerce Purchase works
   code: "mockData.enhancedEcommerce = true;\nmockEec.fb.num_items = 3;\nmockData.objectPropertyList\
     \ = {};\n\nmock('copyFromDataLayer', key => {\n  if (key === 'ecommerce') return\
     \ {\n    currencyCode: 'EUR',\n    purchase: {\n      products: mockEec.gtm.products\n\
     \    }\n  };\n});\n\nconst finalUrl = mockData.serverEndpoint +\n      'fbq/'\
     \ +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId)\
-    \ +\n      '&en=Purchase' +\n      '&et=123457' +\n      '&esu=' + enc(mockData.eventSourceUrl)\
+    \ +\n      '&en=Purchase' +\n      '&et=123456789' +\n      '&esu=' + enc(mockData.eventSourceUrl)\
     \ +\n      '&ei=' + enc(mockData.eventId) +\n      '&ou=true' +\n      '&ud='\
     \ + enc(JSON.stringify({ct: 'Helsinki', country: 'Finland'})) +\n      '&cd='\
-    \ + enc(JSON.stringify(mockEec.fb));\n   \n// Call runCode to run the template's\
-    \ code.\nrunCode(mockData);\n\n// Verify that the tag finished successfully.\n\
-    assertApi('sendPixel').wasCalledWith(finalUrl, success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
+    \ + enc(JSON.stringify(mockEec.fb)) +\n      '&dpo=[]';\n   \n// Call runCode\
+    \ to run the template's code.\nrunCode(mockData);\n\n// Verify that the tag finished\
+    \ successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl, success, failure);\n\
+    assertApi('gtmOnSuccess').wasCalled();\n"
 - name: Object merge with variable, list and eec works
   code: "mockData.enhancedEcommerce = true;\nmockData.objectPropertiesFromVariable\
     \ = {\n  content_type: 'product_group'\n};\nmockData.objectPropertyList = [{\n\
@@ -1079,20 +1081,20 @@ scenarios:
     \ key => {\n  if (key === 'ecommerce') return {\n    currencyCode: 'EUR',\n  \
     \  purchase: {\n      products: mockEec.gtm.products\n    }\n  };\n});\n\nconst\
     \ finalUrl = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId)\
-    \ +\n      '&tec=' + enc(mockData.testId) +\n      '&en=Purchase' +\n      '&et=123457'\
+    \ +\n      '&tec=' + enc(mockData.testId) +\n      '&en=Purchase' +\n      '&et=123456789'\
     \ +\n      '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
     \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
-    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb));\n   \n// Call\
-    \ runCode to run the template's code.\nrunCode(mockData);\n\n// Verify that the\
-    \ tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl, success,\
-    \ failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify(mockEec.fb)) +\n      '&dpo=[]';\n\
+    \   \n// Call runCode to run the template's code.\nrunCode(mockData);\n\n// Verify\
+    \ that the tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
 - name: Send DPO LDU
   code: "mockData.storeInCookie = false;\nmockData.dpoLDU = true;\nmockData.dpoCountry\
     \ = '0';\nmockData.dpoState = '0';\n\nmock('getCookieValues', name => {\n  if\
     \ (name === '_fbc') return [];\n  return [name];\n});\n\nconst finalUrl = mockData.serverEndpoint\
     \ +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' +\
-    \ enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123457' +\n     \
-    \ '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
+    \ enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123456789' +\n  \
+    \    '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
     \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
     \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
     \ +\n      '&fbclid=fbclid' +\n      '&dpo=' + enc(JSON.stringify(['LDU'])) +\
