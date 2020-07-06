@@ -314,6 +314,63 @@ ___TEMPLATE_PARAMETERS___
     ]
   },
   {
+    "type": "GROUP",
+    "name": "dataProcessingOptionsGroup",
+    "displayName": "Data Processing Options",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
+      {
+        "type": "LABEL",
+        "name": "dpoInfo",
+        "displayName": "Data Processing Options force this Facebook event to comply to regional regulations with regard to the processing and selling of user data. Read \u003ca href\u003d\"https://developers.facebook.com/docs/marketing-apis/data-processing-options\"\u003ethis\u003c/a\u003e for more information about how to configure this section."
+      },
+      {
+        "type": "CHECKBOX",
+        "name": "dpoLDU",
+        "checkboxText": "Limited Data Use (LDU)",
+        "simpleValueType": true
+      },
+      {
+        "type": "TEXT",
+        "name": "dpoCountry",
+        "displayName": "Country",
+        "simpleValueType": true,
+        "enablingConditions": [
+          {
+            "paramName": "dpoLDU",
+            "paramValue": true,
+            "type": "EQUALS"
+          }
+        ],
+        "defaultValue": 0,
+        "valueValidators": [
+          {
+            "type": "NUMBER"
+          }
+        ]
+      },
+      {
+        "type": "TEXT",
+        "name": "dpoState",
+        "displayName": "State",
+        "simpleValueType": true,
+        "defaultValue": 0,
+        "enablingConditions": [
+          {
+            "paramName": "dpoLDU",
+            "paramValue": true,
+            "type": "EQUALS"
+          }
+        ],
+        "valueValidators": [
+          {
+            "type": "NUMBER"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "displayName": "User Data",
     "name": "userData",
     "groupStyle": "ZIPPY_CLOSED",
@@ -569,7 +626,8 @@ const dispatch = id => {
         '&ou=' + enc(makeString(commandObj.opt_out)) +
         '&ud=' + enc(JSON.stringify(commandObj.user_data)) +
         '&cd=' + enc(JSON.stringify(commandObj.custom_data)) +
-        (!_fbc && fbclid ? '&fbclid=' + enc(fbclid) : '');
+        (!_fbc && fbclid ? '&fbclid=' + enc(fbclid) : '') +
+        (data.dpoLDU ? '&dpo=' + enc(JSON.stringify(['LDU'])) + '&dpoco=' + enc(data.dpoCountry) + '&dpost=' + enc(data.dpoState) : '&dpo=[]');
   sendPixel(finalUrl, () => {
     if (pixelIds.length) { dispatch(pixelIds.shift()); }
     else { data.gtmOnSuccess(); }
@@ -851,17 +909,32 @@ scenarios:
     assertApi('makeTableMap').wasCalledWith(mockData.objectPropertyList, 'name', 'value');
     assertApi('gtmOnSuccess').wasCalled();
 - name: Send pixel successfully with standard name
-  code: "mockData.storeInCookie = false;\n\nmock('getCookieValues', name => {\n  if\
-    \ (name === '_fbc') return [];\n  return [name];\n});\n\nconst finalUrl = mockData.serverEndpoint\
-    \ +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' +\
-    \ enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123457' +\n     \
-    \ '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
-    \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
-    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
-    \ +\n      '&fbclid=fbclid';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
-    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
-    \    \n                                   \n                                 \
-    \  \n      \n      "
+  code: |-
+    mockData.storeInCookie = false;
+
+    mock('getCookieValues', name => {
+      if (name === '_fbc') return [];
+      return [name];
+    });
+
+    const finalUrl = mockData.serverEndpoint +
+          'fbq/' +
+          '?pid=' + enc(mockData.pixelId) +
+          '&tec=' + enc(mockData.testId) +
+          '&en=PageView' +
+          '&et=123457' +
+          '&esu=' + enc(mockData.eventSourceUrl) +
+          '&ei=' + enc(mockData.eventId) +
+          '&ou=true' +
+          '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country: 'Finland'})) +
+          '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'})) +
+          '&fbclid=fbclid' +
+          '&dpo=[]';
+
+    runCode(mockData);
+
+    assertApi('sendPixel').wasCalledWith(finalUrl, success, failure);
+    assertApi('gtmOnSuccess').wasCalled();
 - name: Add fbclid parameter if cookies not enabled
   code: "const finalUrl = mockData.serverEndpoint +\n      'fbq/' +\n      '?pid='\
     \ + enc(mockData.pixelId) +\n      '&tec=' + enc(mockData.testId) +\n      '&en=PageView'\
@@ -1013,6 +1086,20 @@ scenarios:
     \ runCode to run the template's code.\nrunCode(mockData);\n\n// Verify that the\
     \ tag finished successfully.\nassertApi('sendPixel').wasCalledWith(finalUrl, success,\
     \ failure);\nassertApi('gtmOnSuccess').wasCalled();\n"
+- name: Send DPO LDU
+  code: "mockData.storeInCookie = false;\nmockData.dpoLDU = true;\nmockData.dpoCountry\
+    \ = '0';\nmockData.dpoState = '0';\n\nmock('getCookieValues', name => {\n  if\
+    \ (name === '_fbc') return [];\n  return [name];\n});\n\nconst finalUrl = mockData.serverEndpoint\
+    \ +\n      'fbq/' +\n      '?pid=' + enc(mockData.pixelId) +\n      '&tec=' +\
+    \ enc(mockData.testId) +\n      '&en=PageView' +\n      '&et=123457' +\n     \
+    \ '&esu=' + enc(mockData.eventSourceUrl) +\n      '&ei=' + enc(mockData.eventId)\
+    \ +\n      '&ou=true' +\n      '&ud=' + enc(JSON.stringify({ct: 'Helsinki', country:\
+    \ 'Finland'})) +\n      '&cd=' + enc(JSON.stringify({prop1: 'val1', prop2: 'val2'}))\
+    \ +\n      '&fbclid=fbclid' +\n      '&dpo=' + enc(JSON.stringify(['LDU'])) +\
+    \ '&dpoco=0&dpost=0';\n\nrunCode(mockData);\n\nassertApi('sendPixel').wasCalledWith(finalUrl,\
+    \ success, failure);\nassertApi('gtmOnSuccess').wasCalled();\n               \
+    \    \n                                   \n                                 \
+    \  \n      \n      "
 setup: "const enc = require('encodeUriComponent');\nconst JSON = require('JSON');\n\
   \nconst mockData = {\n  pixelId: '12345',\n  eventName: 'standard',\n  standardEventName:\
   \ 'PageView',\n  customEventName: 'custom',\n  variableEventName: 'ViewContent',\n\
