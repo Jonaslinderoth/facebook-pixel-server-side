@@ -2,6 +2,8 @@ homepage: "https://www.simoahava.com/"
 documentation: "https://www.simoahava.com/custom-templates/facebook-pixel"
 versions:
   # Latest version
+  - sha: 33a3f4e5c1cd42abf27dddbc029fdd5c711427e5
+    changeNotes: Add Data Processing Options.
+  # Older versions
   - sha: 3a2fd73aa6743456761368674162aa2ea25c7274
     changeNotes: Initial release.
-  # Older versions
