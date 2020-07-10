@@ -11,7 +11,7 @@ ___INFO___
 {
   "displayName": "Facebook Pixel - Server-Side",
   "__wm": "VGVtcGxhdGUtQXV0aG9yX0ZhY2Vib29rLVNpbW8tQWhhdmE\u003d",
-  "description": "This is an unofficial Google Tag Manager template for Facebook\u0027s Server-Side API. The template compiles a request to a GTM Server container, and the container forwards the information using FB\u0027s API.",
+  "description": "This template is designed to communicate with the Facebook Client template running in a GTM Server container. No third-party (Facebook) JavaScript is loaded in the browser with this template.",
   "securityGroups": [],
   "categories": [
     "ADVERTISING",
